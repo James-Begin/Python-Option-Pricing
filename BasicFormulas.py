@@ -51,3 +51,16 @@ def binomial(price, strike, exp, rfr, vol):
 
     return [Vcall[0], Vput[0]]
 
+price = float(input("Price of Underlying: "))
+strike = float(input("Option Strike Price: "))
+exp = int(input("Days to expiration: "))
+rfr = float(input("Risk Free Rate: "))
+vol = float(input("Underlying Volatility (Sigma): "))
+
+print("Black Scholes Call/Put: " + str(round(blackscholes(price, strike, exp, rfr, vol)[0], 2)) + "/" +
+      str(round(blackscholes(price, strike, exp, rfr, vol)[1], 2)))
+print("Monte Carlo Call/Put: " + str(round(montecarlo(price, strike, exp, rfr, vol)[0], 2)) + "/" +
+      str(round(montecarlo(price, strike, exp, rfr, vol)[1], 2)))
+print("Binomial Call/Put: " + str(round(binomial(price, strike, exp, rfr, vol)[0], 2)) + "/" +
+      str(round(binomial(price, strike, exp, rfr, vol)[1], 2)))
+
