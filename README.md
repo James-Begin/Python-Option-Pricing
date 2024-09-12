@@ -23,4 +23,15 @@ In this equation,
 Here, $\sigma$ represents the volatility of the underlying asset.  
 Although, $d1$ is complex to derive and difficult to understand from its equation form, it can be thought of as a probability for how likely the option is to end up in "in the money" based on the underlying price, the risk free rate, and the underlying volatility.  
 
-Further, $d2$ helps to adjust $d1$ for the time until expiry, it represents the probability that the option will expire in the money based on the volatility of the underlying and the time until expiry.
+Further, $d2$ helps to adjust $d1$ for the time until expiry, it represents the probability that the option will expire in the money based on the volatility of the underlying and the time until expiry.  
+
+Below is the code for BSM in python, it is important to note that scipy is used to generate the cumulative distribution functions (CDF) and has the fastest runtime of the three models.
+```
+d1 = ((np.log(price / strike)) + (exp * (rfr + ((vol**2)/2)))) / (vol * (exp**0.5))
+d2 = d1 - (vol * (exp)**0.5) 
+return [(price * norm.cdf(d1) - strike * np.exp(-rfr*exp) * norm.cdf(d2)),
+        (strike * math.exp(-rfr*exp) * norm.cdf(-d2) - price * norm.cdf(-d1))]
+```
+
+## Monte Carlo Simulation
+
