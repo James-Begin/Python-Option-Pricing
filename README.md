@@ -16,5 +16,7 @@ In this equation,
 - $S_0$ represents the price of the stock
 - $T$ represents the option's time to expiry in years
 - $r$ represents the annualized risk free interest rate
-
+- $e^(-rT)$ represents the discount factor (current value of future amount)
+- $N(d1)$ and $N(d2)$ together are the special sauce of the equation and represent probabilities from the CDF of a normal distribution at $d1$ and $d2$ (see below)
+  
 
