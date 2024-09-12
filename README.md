@@ -1,4 +1,4 @@
-# Python-Option-Pricing
+# Python Option Pricing (Work in Progress)
 Finding an accurate price for a dynamic, constantly changing object like an option is nearly impossible (unless you can see into the future). Instead, there are numerous methods to estimate the price of an option based on some simple metrics.  
 
 One of the most well known metthods of pricing options is the Black-Scholes-Merton Model (BSM). First coined in the early 70's, it helped make it easier to price options and a boom in options trading around the world. Another method of pricing opions is using Monte Carlo Simulations, where the future prices are predicted using probability distributions. The third method used in this project is the binomial lattice method, where a tree of potential future prices is used to determine the value of an option.
