@@ -18,5 +18,6 @@ In this equation,
 - $r$ represents the annualized risk free interest rate
 - $e^(-rT)$ represents the discount factor (current value of future amount)
 - $N(d1)$ and $N(d2)$ together are the special sauce of the equation and represent probabilities from the CDF of a normal distribution at $d1$ and $d2$ (see below)
-  
 
+![image](https://github.com/user-attachments/assets/f5810430-dedb-48d7-863c-9b95aba3b4b4)  
+Here, $/sigma$
