@@ -11,10 +11,10 @@ One primary assumption of BSM is that stock prices follow geometric brownian mot
 
 ![image](https://github.com/user-attachments/assets/ad69e24e-e797-4404-ab3c-afca3da2c811)  
 In this equation, 
--$C$ represents the price of the option
-$S_0$ represents the price of the stock,  
-$K$ represents the strike price,  
-$r$ represents the annualized risk free interest rate,  
-and $T$ represents the option's time to expiry in years. 
+- $C$ represents the price of the option
+- $S_0$ represents the price of the stock
+- $K$ represents the strike price
+- $r$ represents the annualized risk free interest rate
+- $T$ represents the option's time to expiry in years. 
 
 
