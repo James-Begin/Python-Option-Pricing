@@ -20,4 +20,7 @@ In this equation,
 - $N(d1)$ and $N(d2)$ together are the special sauce of the equation and represent probabilities from the CDF of a normal distribution at $d1$ and $d2$ (see below)
 
 ![image](https://github.com/user-attachments/assets/f5810430-dedb-48d7-863c-9b95aba3b4b4)  
-Here, $\sigma$ represents the volatility of the underlying asset.
+Here, $\sigma$ represents the volatility of the underlying asset.  
+Although, $d1$ is complex to derive and difficult to understand from its equation form, it can be thought of as a probability for how likely the option is to end up in "in the money" based on the underlying price, the risk free rate, and the underlying volatility.  
+
+Further, $d2$ helps to adjust $d1$ for the time until expiry, it represents the probability that the option will expire in the money based on the volatility of the underlying and the time until expiry.
