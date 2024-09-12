@@ -34,4 +34,7 @@ return [(price * norm.cdf(d1) - strike * np.exp(-rfr*exp) * norm.cdf(d2)),
 ```
 
 ## Monte Carlo Simulation
+Using Monte Carlo Simulation to price options is typically more accurate than BSM as we are simulating the future prices of the underlying asset over many iterations to help determine the price of the option.  
 
+The first step in simulation is to model the movements of the underlying asset. In this case, we assume that stock prices follow Geometric Brownian Motion, similar to the above BSM. Using this assumption, the formula for the price of an underlying stock at time $t$ is:  
+$S_t = S_0 * exp[(r - frac{\sigma^2}{2}) * t + \sigma * W_t]$
