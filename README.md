@@ -19,8 +19,8 @@ In this equation,
 - $e^(-rT)$ represents the discount factor (current value of future amount)
 - $N(d1)$ and $N(d2)$ together are the special sauce of the equation and represent probabilities from the CDF of a normal distribution at $d1$ and $d2$ (see below)  
 ### $d_1 = \frac{ln(\frac{S_0}{K}) + (r + \frac{\sigma^2}{2}) * T}{\sigma * \sqrt{T}}$
-### $d_2 = d_1 - \sigma * \sqrt{T}$
-![image](https://github.com/user-attachments/assets/f5810430-dedb-48d7-863c-9b95aba3b4b4)  
+### $d_2 = d_1 - \sigma * \sqrt{T}$  
+
 Here, $\sigma$ represents the volatility of the underlying asset.  
 Although, $d1$ is complex to derive and difficult to understand from its equation form, it can be thought of as a probability for how likely the option is to end up in "in the money" based on the underlying price, the risk free rate, and the underlying volatility.  
 
