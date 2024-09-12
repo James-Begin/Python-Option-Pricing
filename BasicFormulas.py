@@ -2,7 +2,7 @@ import math
 import pandas as pd
 import numpy as np
 import datetime
-from scipy.stats import norm
+from scipy.stats import stat
 
 def blackscholes(price, strike, exp, rfr, vol):
     #first intermediate step
@@ -13,8 +13,8 @@ def blackscholes(price, strike, exp, rfr, vol):
     #second step
     d2 = d1 - (vol * (exp)**0.5)
     #[call price, put price]
-    return [(price * norm.cdf(d1) - strike * np.exp(-rfr*exp) * norm.cdf(d2)),
-            (strike * math.exp(-rfr*exp) * norm.cdf(-d2) - price * norm.cdf(-d1))]
+    return [(price * stat.cdf(d1) - strike * np.exp(-rfr*exp) * stat.cdf(d2)),
+            (strike * math.exp(-rfr*exp) * stat.cdf(-d2) - price * stat.cdf(-d1))]
 
 def montecarlo(price, strike, exp, rfr, vol):
     #first simulate prices
