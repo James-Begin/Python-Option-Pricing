@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import math
 
-from statsmodels.sandbox.distributions.mv_normal import np_log
 
 #######################
 # Page configuration
