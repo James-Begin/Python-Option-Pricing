@@ -163,12 +163,12 @@ class CalcOption:
         rfr = self.interest_rate
         bscall = round(blackscholes(price, strike, exp, rfr, vol)[0], 2)
         bsput = round(blackscholes(price, strike, exp, rfr, vol)[1], 2)
-        mccall = round(montecarlo(price, strike, exp, rfr, vol)[0], 2)
-        mcput = round(montecarlo(price, strike, exp, rfr, vol)[1], 2)
-        bccall = round(binomialcall(price, strike, exp, rfr, vol), 2)
-        bcput = round(binomialput(price, strike, exp, rfr, vol), 2)
-        call = np.mean([bscall,mccall,bccall])
-        put = np.mean([bsput, mcput, bcput])
+        #mccall = round(montecarlo(price, strike, exp, rfr, vol)[0], 2)
+        #mcput = round(montecarlo(price, strike, exp, rfr, vol)[1], 2)
+        #bccall = round(binomialcall(price, strike, exp, rfr, vol), 2)
+        #bcput = round(binomialput(price, strike, exp, rfr, vol), 2)
+        call = np.mean([bscall])#,mccall,bccall])
+        put = np.mean([bsput])#, mcput, bcput])
         self.call = call
         self.put = put
         return call, put
