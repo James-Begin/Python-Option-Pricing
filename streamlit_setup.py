@@ -93,10 +93,11 @@ class CalcOption:
         def montecarlo(price, strike, exp, rfr, vol):
             # first simulate prices
             # init price movements over time (1000 simulations can be changed)
+            exp = (int(exp))
             years = exp / 365
             timeperstep = years / exp
             numsim = 1000
-            simulate = np.zeros((int(exp), numsim))
+            simulate = np.zeros((exp, numsim))
             simulate[0] = price
 
             for time in range(1, exp):
