@@ -6,6 +6,7 @@ import plotly.graph_objects as go
 from numpy import log, sqrt, exp  # Make sure to import these
 import matplotlib.pyplot as plt
 import seaborn as sns
+import math
 
 #######################
 # Page configuration
@@ -61,7 +62,7 @@ st.markdown("""
 
 # (Include the BlackScholes class definition here)
 
-class BlackScholes:
+class CalcOption:
     def __init__(
             self,
             time_to_maturity: float,
@@ -72,49 +73,103 @@ class BlackScholes:
     ):
         self.time_to_maturity = time_to_maturity
         self.strike = strike
-        self.current_price = current_price
+        self.price = current_price
         self.volatility = volatility
         self.interest_rate = interest_rate
 
-    def calculate_prices(
-            self,
-    ):
-        time_to_maturity = self.time_to_maturity
+    def calculate_prices(self):
+        def blackscholes(price, strike, exp, rfr, vol):
+            # first intermediate step
+            #
+            exp = exp / 365
+            d1 = ((np.log(price / strike)) + (exp * (rfr + ((vol ** 2) / 2)))) / (vol * (exp ** 0.5))
+
+            # second step
+            d2 = d1 - (vol * (exp) ** 0.5)
+            # [call price, put price]
+            return [(price * norm.cdf(d1) - strike * np.exp(-rfr * exp) * norm.cdf(d2)),
+                    (strike * math.exp(-rfr * exp) * norm.cdf(-d2) - price * norm.cdf(-d1))]
+
+        def montecarlo(price, strike, exp, rfr, vol):
+            # first simulate prices
+            # init price movements over time (1000 simulations can be changed)
+            years = exp / 365
+            timeperstep = years / exp
+            numsim = 1000
+            simulate = np.zeros((exp, numsim))
+            simulate[0] = price
+
+            for time in range(1, exp):
+                # random values
+                rand = np.random.standard_normal(numsim)
+                # fill in prices at each time
+                simulate[time] = simulate[time - 1] * np.exp(
+                    (rfr - 0.5 * vol ** 2) * timeperstep + (vol * np.sqrt(timeperstep) * rand))
+
+            return [np.exp(-rfr * years) * (1 / numsim) * np.sum(np.maximum(simulate[-1] - strike, 0)),
+                    np.exp(-rfr * years) * (1 / numsim) * np.sum(np.maximum(strike - simulate[-1], 0))]
+
+        def binomialput(price, strike, exp, rfr, vol):
+            steps = 1000
+            exp = exp / 365
+            dt = exp / steps
+            upfactor = np.exp(vol * np.sqrt(dt))
+            downfactor = 1 / upfactor
+            upprob = (np.exp(rfr * dt) - downfactor) / (upfactor - downfactor)
+            tree = {}
+
+            for m in range(steps + 1):
+                currnode = price * (upfactor ** (2 * m - steps))
+                tree[(steps, m)] = max(strike - currnode, 0)
+
+            for k in range(steps - 1, -1, -1):
+                for m in range(k + 1):
+                    val = np.exp(-rfr * dt) * (upprob * tree[(k + 1, m + 1)] +
+                                               (1 - upprob) * tree[(k + 1, m)])
+                    node = price * (upfactor ** (2 * m - k))
+                    tree[(k, m)] = max(val, max((strike - node), 0))
+
+            return tree[0, 0]
+
+        def binomialcall(price, strike, exp, rfr, vol):
+            steps = 1000
+            exp = exp / 365
+            dt = exp / steps
+            upfactor = np.exp(vol * np.sqrt(dt))
+            downfactor = 1 / upfactor
+            upprob = (np.exp(rfr * dt) - downfactor) / (upfactor - downfactor)
+            tree = np.zeros(steps + 1)
+            tree[0] = price * downfactor ** steps
+            for i in range(1, steps + 1):
+                tree[i] = tree[i - 1] * (upfactor / downfactor)
+
+            optiontree = np.zeros(steps + 1)
+            for i in range(0, steps + 1):
+                optiontree[i] = max(0, tree[i] - strike)
+
+            for i in range(steps, 0, -1):
+                for j in range(0, i):
+                    optiontree[j] = ((np.exp(-rfr * dt)) *
+                                     (upprob * optiontree[j + 1] + (1 - upprob) * optiontree[j]))
+
+            return optiontree[0]
+
+        exp = self.time_to_maturity
         strike = self.strike
-        current_price = self.current_price
-        volatility = self.volatility
-        interest_rate = self.interest_rate
-
-        d1 = (
-                     log(current_price / strike) +
-                     (interest_rate + 0.5 * volatility ** 2) * time_to_maturity
-             ) / (
-                     volatility * sqrt(time_to_maturity)
-             )
-        d2 = d1 - volatility * sqrt(time_to_maturity)
-
-        call_price = current_price * norm.cdf(d1) - (
-                strike * exp(-(interest_rate * time_to_maturity)) * norm.cdf(d2)
-        )
-        put_price = (
-                            strike * exp(-(interest_rate * time_to_maturity)) * norm.cdf(-d2)
-                    ) - current_price * norm.cdf(-d1)
-
-        self.call_price = call_price
-        self.put_price = put_price
-
-        # GREEKS
-        # Delta
-        self.call_delta = norm.cdf(d1)
-        self.put_delta = 1 - norm.cdf(d1)
-
-        # Gamma
-        self.call_gamma = norm.pdf(d1) / (
-                strike * volatility * sqrt(time_to_maturity)
-        )
-        self.put_gamma = self.call_gamma
-
-        return call_price, put_price
+        price = self.price
+        vol = self.volatility
+        rfr = self.interest_rate
+        bscall = round(blackscholes(price, strike, exp, rfr, vol)[0], 2)
+        bsput = round(blackscholes(price, strike, exp, rfr, vol)[1], 2)
+        mccall = round(montecarlo(price, strike, exp, rfr, vol)[0], 2)
+        mcput = round(montecarlo(price, strike, exp, rfr, vol)[1], 2)
+        bccall = round(binomialcall(price, strike, exp, rfr, vol), 2)
+        bcput = round(binomialput(price, strike, exp, rfr, vol), 2)
+        call = np.mean(bscall + mccall + bccall)
+        put = np.mean(bsput, mcput, bcput)
+        self.call = call
+        self.put = put
+        return call, put
 
 
 # Function to generate heatmaps
@@ -153,7 +208,7 @@ def plot_heatmap(bs_model, spot_range, vol_range, strike):
 
     for i, vol in enumerate(vol_range):
         for j, spot in enumerate(spot_range):
-            bs_temp = BlackScholes(
+            bs_temp = CalcOption(
                 time_to_maturity=bs_model.time_to_maturity,
                 strike=strike,
                 current_price=spot,
@@ -161,8 +216,8 @@ def plot_heatmap(bs_model, spot_range, vol_range, strike):
                 interest_rate=bs_model.interest_rate
             )
             bs_temp.calculate_prices()
-            call_prices[i, j] = bs_temp.call_price
-            put_prices[i, j] = bs_temp.put_price
+            call_prices[i, j] = bs_temp.call
+            put_prices[i, j] = bs_temp.put
 
     # Plotting Call Price Heatmap
     fig_call, ax_call = plt.subplots(figsize=(10, 8))
@@ -198,7 +253,7 @@ input_df = pd.DataFrame(input_data)
 st.table(input_df)
 
 # Calculate Call and Put values
-bs_model = BlackScholes(time_to_maturity, strike, current_price, volatility, interest_rate)
+bs_model = CalcOption(time_to_maturity, strike, current_price, volatility, interest_rate)
 call_price, put_price = bs_model.calculate_prices()
 
 # Display Call and Put Values in colored tables
