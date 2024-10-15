@@ -212,10 +212,10 @@ def plot_heatmap(bs_model, spot_range, vol_range, strike):
     for i, vol in enumerate(vol_range):
         for j, spot in enumerate(spot_range):
             bs_temp = CalcOption(
-                time_to_maturity=bs_model.time_to_maturity,
+                time_to_maturity=vol,
                 strike=strike,
                 current_price=spot,
-                volatility=vol,
+                volatility=bs_model.volatility,
                 interest_rate=bs_model.interest_rate
             )
             bs_temp.calculate_prices()
