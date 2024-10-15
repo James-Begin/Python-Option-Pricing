@@ -166,8 +166,8 @@ class CalcOption:
         mcput = round(montecarlo(price, strike, exp, rfr, vol)[1], 2)
         bccall = round(binomialcall(price, strike, exp, rfr, vol), 2)
         bcput = round(binomialput(price, strike, exp, rfr, vol), 2)
-        call = np.mean(bscall + mccall + bccall)
-        put = np.mean(bsput, mcput, bcput)
+        call = np.average(bscall + mccall + bccall)
+        put = np.average(bsput, mcput, bcput)
         self.call = call
         self.put = put
         return call, put
