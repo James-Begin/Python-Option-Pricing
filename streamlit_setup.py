@@ -96,7 +96,7 @@ class CalcOption:
             years = exp / 365
             timeperstep = years / exp
             numsim = 1000
-            simulate = np.zeros((exp, numsim))
+            simulate = np.zeros((int(exp), numsim))
             simulate[0] = price
 
             for time in range(1, exp):
@@ -187,7 +187,7 @@ with st.sidebar:
 
     current_price = st.number_input("Current Asset Price", value=100.0)
     strike = st.number_input("Strike Price", value=100.0)
-    time_to_maturity = st.number_input("Time to Maturity (Years)", value=1.0)
+    time_to_maturity = st.number_input("Time to Maturity (Years)", value=30.0)
     volatility = st.number_input("Volatility (σ)", value=0.2)
     interest_rate = st.number_input("Risk-Free Interest Rate", value=0.05)
 
@@ -200,6 +200,7 @@ with st.sidebar:
 
     spot_range = np.linspace(spot_min, spot_max, 10)
     vol_range = np.linspace(vol_min, vol_max, 10)
+
 
 
 def plot_heatmap(bs_model, spot_range, vol_range, strike):
@@ -245,7 +246,7 @@ st.title("Black-Scholes Pricing Model")
 input_data = {
     "Current Asset Price": [current_price],
     "Strike Price": [strike],
-    "Time to Maturity (Years)": [time_to_maturity],
+    "Time to Maturity (Days)": [time_to_maturity],
     "Volatility (σ)": [volatility],
     "Risk-Free Interest Rate": [interest_rate],
 }
@@ -255,6 +256,8 @@ st.table(input_df)
 # Calculate Call and Put values
 bs_model = CalcOption(time_to_maturity, strike, current_price, volatility, interest_rate)
 call_price, put_price = bs_model.calculate_prices()
+print(call_price, put_price)
+
 
 # Display Call and Put Values in colored tables
 col1, col2 = st.columns([1, 1], gap="small")
