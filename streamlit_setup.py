@@ -189,30 +189,30 @@ with st.sidebar:
 
     current_price = st.number_input("Current Asset Price", value=100.0)
     strike = st.number_input("Strike Price", value=100.0)
-    time_to_maturity = st.number_input("Time to Maturity (Years)", value=30.0)
+    time_to_maturity = st.number_input("Time to Maturity (Days)", value=30.0)
     volatility = st.number_input("Volatility (σ)", value=0.2)
     interest_rate = st.number_input("Risk-Free Interest Rate", value=0.05)
 
     st.markdown("---")
     calculate_btn = st.button('Heatmap Parameters')
-    spot_min = st.number_input('Min Spot Price', min_value=0.01, value=current_price * 0.8, step=0.01)
-    spot_max = st.number_input('Max Spot Price', min_value=0.01, value=current_price * 1.2, step=0.01)
-    vol_min = st.slider('Min Volatility for Heatmap', min_value=0.01, max_value=1.0, value=volatility * 0.5, step=0.01)
-    vol_max = st.slider('Max Volatility for Heatmap', min_value=0.01, max_value=1.0, value=volatility * 1.5, step=0.01)
+    spot_min = st.number_input('Min Spot Price', min_value=0.01, value=current_price * 0.5, step=0.10)
+    spot_max = st.number_input('Max Spot Price', min_value=0.01, value=current_price * 1.5, step=0.10)
+    exp_min = st.slider('Min Volatility for Heatmap', min_value=0.01, max_value=1000.0, value=np.floor(time_to_maturity * 0.5), step=(1 if time_to_maturity < 30 else 7))
+    exp_max = st.slider('Max Volatility for Heatmap', min_value=0.01, max_value=1000.0, value=np.floor(time_to_maturity * 0.5), step=(1 if time_to_maturity < 30 else 7))
 
     spot_range = np.linspace(spot_min, spot_max, 10)
-    vol_range = np.linspace(vol_min, vol_max, 10)
+    exp_range = np.linspace(exp_min, exp_max, 10)
 
 
 
-def plot_heatmap(bs_model, spot_range, vol_range, strike):
-    call_prices = np.zeros((len(vol_range), len(spot_range)))
-    put_prices = np.zeros((len(vol_range), len(spot_range)))
+def plot_heatmap(bs_model, spot_range, exp_range, strike):
+    call_prices = np.zeros((len(spot_range), len(exp_range)))
+    put_prices = np.zeros((len(spot_range), len(exp_range)))
 
-    for i, vol in enumerate(vol_range):
-        for j, spot in enumerate(spot_range):
+    for i, spot in enumerate(spot_range):
+        for j, exp in enumerate(exp_range):
             bs_temp = CalcOption(
-                time_to_maturity=vol,
+                time_to_maturity=exp,
                 strike=strike,
                 current_price=spot,
                 volatility=bs_model.volatility,
@@ -224,19 +224,19 @@ def plot_heatmap(bs_model, spot_range, vol_range, strike):
 
     # Plotting Call Price Heatmap
     fig_call, ax_call = plt.subplots(figsize=(10, 8))
-    sns.heatmap(call_prices, xticklabels=np.round(spot_range, 2), yticklabels=np.round(vol_range, 2), annot=True,
+    sns.heatmap(call_prices, xticklabels=np.round(spot_range, 2), yticklabels=np.round(exp_range, 2), annot=True,
                 fmt=".2f", cmap="viridis", ax=ax_call)
     ax_call.set_title('CALL')
-    ax_call.set_xlabel('Spot Price')
-    ax_call.set_ylabel('Volatility')
+    ax_call.set_xlabel('Days to Maturity')
+    ax_call.set_ylabel('Spot Price')
 
     # Plotting Put Price Heatmap
     fig_put, ax_put = plt.subplots(figsize=(10, 8))
-    sns.heatmap(put_prices, xticklabels=np.round(spot_range, 2), yticklabels=np.round(vol_range, 2), annot=True,
+    sns.heatmap(put_prices, xticklabels=np.round(spot_range, 2), yticklabels=np.round(exp_range, 2), annot=True,
                 fmt=".2f", cmap="viridis", ax=ax_put)
     ax_put.set_title('PUT')
-    ax_put.set_xlabel('Spot Price')
-    ax_put.set_ylabel('Volatility')
+    ax_put.set_xlabel('Days to Maturity')
+    ax_put.set_ylabel('Spot Price')
 
     return fig_call, fig_put
 
@@ -296,10 +296,10 @@ col1, col2 = st.columns([1, 1], gap="small")
 
 with col1:
     st.subheader("Call Price Heatmap")
-    heatmap_fig_call, _ = plot_heatmap(bs_model, spot_range, vol_range, strike)
+    heatmap_fig_call, _ = plot_heatmap(bs_model, spot_range, exp_range, strike)
     st.pyplot(heatmap_fig_call)
 
 with col2:
     st.subheader("Put Price Heatmap")
-    _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, vol_range, strike)
+    _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, exp_range, strike)
     st.pyplot(heatmap_fig_put)
