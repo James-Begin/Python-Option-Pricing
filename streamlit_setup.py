@@ -197,8 +197,8 @@ with st.sidebar:
     calculate_btn = st.button('Heatmap Parameters')
     spot_min = st.number_input('Min Spot Price', min_value=0.01, value=current_price * 0.5, step=0.10)
     spot_max = st.number_input('Max Spot Price', min_value=0.01, value=current_price * 1.5, step=0.10)
-    exp_min = st.slider('Min Volatility for Heatmap', min_value=0.01, max_value=1000.0, value=np.floor(time_to_maturity * 0.5), step=(1.0 if time_to_maturity < 31 else 7.0))
-    exp_max = st.slider('Max Volatility for Heatmap', min_value=0.01, max_value=1000.0, value=np.floor(time_to_maturity * 0.5), step=(1.0 if time_to_maturity < 31 else 7.0))
+    exp_min = 1.0
+    exp_max = st.slider('Max Volatility for Heatmap', min_value=0.01, max_value=1000.0, value=time_to_maturity, step=(1.0 if time_to_maturity < 31 else 7.0))
 
     spot_range = np.linspace(spot_min, spot_max, 10)
     exp_range = np.linspace(exp_min, exp_max, 10)
