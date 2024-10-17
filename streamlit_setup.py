@@ -201,7 +201,9 @@ with st.sidebar:
     exp_min = 1.0
     exp_max = time_to_maturity
 
-    spot_range = np.linspace(spot_min, spot_max, 12)
+    spot_range1 = np.linspace(spot_min, pp, 6)
+    spot_range2 = np.linspace(pp, spot_max, 6)
+    spot_range = np.concatenate((spot_range1, spot_range2))
     exp_range = np.linspace(exp_min, exp_max, 12)
 
 
