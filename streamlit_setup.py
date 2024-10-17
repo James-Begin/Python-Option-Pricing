@@ -242,7 +242,7 @@ def plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp):
 
     fig_call, ax_call = plt.subplots(figsize=(10, 8))
     rdgn = sns.diverging_palette(h_neg=130, h_pos=10, s=99, l=55, sep=3, as_cmap=True)
-    sns.heatmap(call_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
+    sns.heatmap(call_prices, center=0.00, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
                 fmt=".2f", cmap=rdgn, ax=ax_call, cbar=False)
     ax_call.set_title(str(t) + ' Call Return Heatmap')
     ax_call.set_xlabel('Days to Maturity')
@@ -271,7 +271,7 @@ def plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp):
     # Plotting Put Price Heatmap
     fig_put, ax_put = plt.subplots(figsize=(10, 8))
     rdgn = sns.diverging_palette(h_neg=130, h_pos=10, s=99, l=55, sep=3, as_cmap=True)
-    sns.heatmap(put_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
+    sns.heatmap(put_prices, center=0.00, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
                 fmt=".2f", cmap=rdgn , ax=ax_put, cbar=False)
     ax_put.set_title(str(t) + ' Put Return Heatmap')
     ax_put.set_xlabel('Days to Maturity')
