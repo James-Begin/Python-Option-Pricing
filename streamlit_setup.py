@@ -38,14 +38,14 @@ st.markdown("""
 .metric-call {
     background-color: #1ba122; /* Light green background */
     color: "#3d3c35"
-    margin-right: 10px; /* Spacing between CALL and PUT */
+    margin-right: 8px; /* Spacing between CALL and PUT */
     border-radius: 10px; /* Rounded corners */
 }
 
 .metric-put {
     background-color: #9e1919; /* Light red background */
     color: "#3d3c35"
-    border-radius: 12px; /* Rounded corners */
+    border-radius: 100px; /* Rounded corners */
 }
 
 /* Style for the value text */
