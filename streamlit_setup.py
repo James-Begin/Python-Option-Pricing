@@ -195,6 +195,7 @@ with st.sidebar:
         unsafe_allow_html=True)
     t = st.text_input("Equity Symbol", value='AAPL')
     ticker = yf.Ticker(t)
+    callput = st.radio("Option Type", ["Call", "Put"])
 
     current_price = ticker.info.get('currentPrice')
     strike = st.number_input("Strike Price", min_value=0.0, value=current_price)
@@ -333,9 +334,15 @@ st.info(
     "Explore how option prices fluctuate with varying 'Spot Prices and Volatility' levels using interactive heatmap parameters, all while maintaining a constant 'Strike Price'.")
 
 # Interactive Sliders and Heatmaps for Call and Put Options
-col1, col2 = st.columns([1, 1], gap="small")
+#col1, col2 = st.columns([1, 1], gap="small")
 
-with col1:
+if callput == "Call":
+    plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp)
+elif callput == "Put":
+    plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp)
+
+
+'''with col1:
     st.subheader("Call Price Heatmap")
     heatmap_fig_call, _ = plot_heatmap(bs_model, spot_range, exp_range, strike, pp)
     st.pyplot(heatmap_fig_call)
@@ -343,4 +350,4 @@ with col1:
 with col2:
     st.subheader("Put Price Heatmap")
     _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, exp_range, strike, pp)
-    st.pyplot(heatmap_fig_put)
+    st.pyplot(heatmap_fig_put)'''
