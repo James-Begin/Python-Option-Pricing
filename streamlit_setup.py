@@ -27,7 +27,7 @@ st.markdown("""
 /* Adjust the size and alignment of the CALL and PUT value containers */
 .metric-container {
     display: flex;
-    justify-content: left
+    justify-content: center;
     align-items: center;
     padding: 8px; /* Adjust the padding to control height */
     width: auto; /* Auto width for responsiveness, or set a fixed width if necessary */
@@ -57,7 +57,7 @@ st.markdown("""
 
 /* Style for the label text */
 .metric-label {
-    font-size: 1.5rem; /* Adjust font size */
+    font-size: 1.25rem; /* Adjust font size */
     margin-bottom: 2px; /* Spacing between label and value */
 }
 
