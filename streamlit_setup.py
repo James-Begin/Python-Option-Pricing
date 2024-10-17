@@ -195,10 +195,11 @@ with st.sidebar:
 
     st.markdown("---")
     calculate_btn = st.button('Heatmap Parameters')
-    spot_min = st.number_input('Min Spot Price', min_value=0.01, value=current_price * 0.5, step=0.10)
-    spot_max = st.number_input('Max Spot Price', min_value=0.01, value=current_price * 1.5, step=0.10)
+    purchase_price = st.slider("Purchase Price", value=0.0, min_value=0.0, max_value=1000.0)
+    spot_min = current_price * 0.5
+    spot_max = current_price * 1.5
     exp_min = 1.0
-    exp_max = st.slider('Max Volatility for Heatmap', min_value=0.01, max_value=1000.0, value=time_to_maturity, step=(1.0 if time_to_maturity < 31 else 7.0))
+    exp_max = time_to_maturity
 
     spot_range = np.linspace(spot_min, spot_max, 10)
     exp_range = np.linspace(exp_min, exp_max, 10)
@@ -209,8 +210,8 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike):
     call_prices = np.zeros((len(spot_range), len(exp_range)))
     put_prices = np.zeros((len(spot_range), len(exp_range)))
 
-    for i, spot in enumerate(spot_range):
-        for j, exp in enumerate(exp_range):
+    for i, exp in enumerate(exp_range):
+        for j, spot in enumerate(spot_range):
             bs_temp = CalcOption(
                 time_to_maturity=exp,
                 strike=strike,
