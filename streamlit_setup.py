@@ -27,7 +27,7 @@ st.markdown("""
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 16px; /* Adjust the padding to control height */
+    padding: 8px; /* Adjust the padding to control height */
     width: auto; /* Auto width for responsiveness, or set a fixed width if necessary */
     margin: 0 auto; /* Center the container */
 }
@@ -191,7 +191,7 @@ with st.sidebar:
     st.write("`Created by:`")
     linkedin_url = "https://www.linkedin.com/in/James-Begin/"
     st.markdown(
-        f'<a href="{linkedin_url}" target="_blank" style="text-decoration: none; color: inherit;"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="25" height="25" style="vertical-align: middle; margin-right: 10px;">`Prudhvi Reddy, Muppala`</a>',
+        f'<a href="{linkedin_url}" target="_blank" style="text-decoration: none; color: inherit;"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="25" height="25" style="vertical-align: middle; margin-right: 10px;">`James Begin`</a>',
         unsafe_allow_html=True)
     t = st.text_input("Equity Symbol", value='AAPL')
     ticker = yf.Ticker(t)
@@ -220,7 +220,7 @@ with st.sidebar:
 
 
 
-def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
+def plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp):
     call_prices = np.zeros((len(spot_range), len(exp_range)))
     put_prices = np.zeros((len(spot_range), len(exp_range)))
 
@@ -257,7 +257,46 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
     ax_put.set_ylabel('Spot Price')
     ax_put.axhline(y=current_price)
 
-    return fig_call, fig_put
+    return fig_call
+
+def plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp):
+    call_prices = np.zeros((len(spot_range), len(exp_range)))
+    put_prices = np.zeros((len(spot_range), len(exp_range)))
+
+    for i, spot in enumerate(spot_range[::-1]):
+        for j, exp in enumerate(exp_range[::-1]):
+            bs_temp = CalcOption(
+                time_to_maturity=exp,
+                strike=strike,
+                current_price=spot,
+                volatility=bs_model.volatility,
+                interest_rate=bs_model.interest_rate,
+                mcsteps = bs_model.mcsteps,
+                bsteps = bs_model.bsteps
+            )
+            bs_temp.calculate_prices()
+            call_prices[i, j] = 100 * ((bs_temp.call - pp) / pp)
+            put_prices[i, j] = 100 * ((bs_temp.put - pp) / pp)
+
+    # Plotting Call Price Heatmap
+    fig_call, ax_call = plt.subplots(figsize=(10, 8))
+    sns.heatmap(call_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
+                fmt=".2f", cmap="RdYlGn", ax=ax_call)
+    ax_call.set_title(str(t) + ' Call Return Heatmap')
+    ax_call.set_xlabel('Days to Maturity')
+    ax_call.set_ylabel('Spot Price')
+    ax_call.axhline(y=current_price)
+
+    # Plotting Put Price Heatmap
+    fig_put, ax_put = plt.subplots(figsize=(10, 8))
+    sns.heatmap(put_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
+                fmt=".2f", cmap="RdYlGn", ax=ax_put)
+    ax_put.set_title(str(t) + ' Put Return Heatmap')
+    ax_put.set_xlabel('Days to Maturity')
+    ax_put.set_ylabel('Spot Price')
+    ax_put.axhline(y=current_price)
+
+    return fig_put
 
 # Main Page for Output Display
 st.title("Options Profit Calculator")
