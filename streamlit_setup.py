@@ -227,8 +227,8 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
                 interest_rate=bs_model.interest_rate
             )
             bs_temp.calculate_prices()
-            call_prices[i, j] = 100 * ((bs_temp.call - pp) / pp)
-            put_prices[i, j] = 100 * ((bs_temp.put - pp) / pp)
+            call_prices[i, j] = 100 * ((bs_temp.call - (pp*100)) / (pp*100))
+            put_prices[i, j] = 100 * ((bs_temp.put - (pp*100)) / (pp*100))
 
     # Plotting Call Price Heatmap
     fig_call, ax_call = plt.subplots(figsize=(10, 8))
