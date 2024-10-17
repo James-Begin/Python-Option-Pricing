@@ -14,7 +14,7 @@ import math
 #######################
 # Page configuration
 st.set_page_config(
-    page_title="Black-Scholes Option Pricing Model",
+    page_title="Options Profit Calculator",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded")
@@ -27,7 +27,7 @@ st.markdown("""
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 8px; /* Adjust the padding to control height */
+    padding: 16px; /* Adjust the padding to control height */
     width: auto; /* Auto width for responsiveness, or set a fixed width if necessary */
     margin: 0 auto; /* Center the container */
 }
@@ -73,6 +73,8 @@ class CalcOption:
             current_price: float,
             volatility: float,
             interest_rate: float,
+            mcsteps: int,
+            bsteps: int
     ):
 
         self.time_to_maturity = time_to_maturity
@@ -80,6 +82,8 @@ class CalcOption:
         self.price = current_price
         self.volatility = volatility
         self.interest_rate = interest_rate
+        self.mcsteps = mcsteps
+        self.bsteps = bsteps
 
 
     def calculate_prices(self):
@@ -95,13 +99,13 @@ class CalcOption:
             return [(price * norm.cdf(d1) - strike * np.exp(-rfr * exp) * norm.cdf(d2)),
                     (strike * math.exp(-rfr * exp) * norm.cdf(-d2) - price * norm.cdf(-d1))]
 
-        def montecarlo(price, strike, exp, rfr, vol):
+        def montecarlo(price, strike, exp, rfr, vol, mcsteps):
             # first simulate prices
             # init price movements over time (1000 simulations can be changed)
             exp = (int(exp))
             years = exp / 365
             timeperstep = years / exp
-            numsim = 200
+            numsim = mcsteps
             simulate = np.zeros((exp, numsim))
             simulate[0] = price
 
@@ -115,8 +119,8 @@ class CalcOption:
             return [np.exp(-rfr * years) * (1 / numsim) * np.sum(np.maximum(simulate[-1] - strike, 0)),
                     np.exp(-rfr * years) * (1 / numsim) * np.sum(np.maximum(strike - simulate[-1], 0))]
 
-        def binomialput(price, strike, exp, rfr, vol):
-            steps = 100
+        def binomialput(price, strike, exp, rfr, vol, bsteps):
+            steps = bsteps
             exp = exp / 365
             dt = exp / steps
             upfactor = np.exp(vol * np.sqrt(dt))
@@ -137,8 +141,8 @@ class CalcOption:
 
             return tree[0, 0]
 
-        def binomialcall(price, strike, exp, rfr, vol):
-            steps = 100
+        def binomialcall(price, strike, exp, rfr, vol, bsteps):
+            steps = bsteps
             exp = exp / 365
             dt = exp / steps
             upfactor = np.exp(vol * np.sqrt(dt))
@@ -184,9 +188,8 @@ class CalcOption:
 
 # Sidebar for User Inputs
 with st.sidebar:
-    st.title("📊 Black-Scholes Model")
     st.write("`Created by:`")
-    linkedin_url = "https://www.linkedin.com/in/mprudhvi/"
+    linkedin_url = "https://www.linkedin.com/in/James-Begin/"
     st.markdown(
         f'<a href="{linkedin_url}" target="_blank" style="text-decoration: none; color: inherit;"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="25" height="25" style="vertical-align: middle; margin-right: 10px;">`Prudhvi Reddy, Muppala`</a>',
         unsafe_allow_html=True)
@@ -198,7 +201,9 @@ with st.sidebar:
     time_to_maturity = st.number_input("Time to Maturity (Days)",min_value=1, value=7)
     volatility = st.number_input("Volatility (σ)",min_value=0.0, max_value=1.0, value=0.1)
     interest_rate = st.number_input("Risk-Free Interest Rate", min_value=0.0, max_value=1.0, value=0.05)
-    bs_model = CalcOption(time_to_maturity, strike, current_price, volatility, interest_rate)
+    mcsteps = st.number_input("Monte Carlo Simulations", min_value=1, value=100)
+    bsteps = st.number_input("Binomial Model Steps", min_value=1, value=100)
+    bs_model = CalcOption(time_to_maturity, strike, current_price, volatility, interest_rate, mcsteps, bsteps)
     call_price, put_price = bs_model.calculate_prices()
     st.markdown("---")
     calculate_btn = st.button('Heatmap Parameters')
@@ -262,22 +267,20 @@ print(call_price, put_price)
 col1, col2 = st.columns([1, 1], gap="small")
 
 with col1:
-    # Using the custom class for CALL value
     st.markdown(f"""
         <div class="metric-container metric-call">
             <div>
-                <div class="metric-label">CALL Value</div>
+                <div class="metric-label">Est. Call Value</div>
                 <div class="metric-value">${call_price:.2f}</div>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
 with col2:
-    # Using the custom class for PUT value
     st.markdown(f"""
         <div class="metric-container metric-put">
             <div>
-                <div class="metric-label">PUT Value</div>
+                <div class="metric-label">Est. Put Value</div>
                 <div class="metric-value">${put_price:.2f}</div>
             </div>
         </div>
