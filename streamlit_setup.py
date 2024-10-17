@@ -217,8 +217,8 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
     call_prices = np.zeros((len(spot_range), len(exp_range)))
     put_prices = np.zeros((len(spot_range), len(exp_range)))
 
-    for i, spot in enumerate(spot_range):
-        for j, exp in enumerate(exp_range):
+    for i, spot in enumerate(spot_range[::-1]):
+        for j, exp in enumerate(exp_range[::-1]):
             bs_temp = CalcOption(
                 time_to_maturity=exp,
                 strike=strike,
