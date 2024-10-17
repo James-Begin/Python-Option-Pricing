@@ -341,9 +341,11 @@ st.info(
 
 
 if callput == "Call":
-    plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp)
+    plot = plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp)
+    st.pyplot(plot)
 elif callput == "Put":
-    plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp)
+    plot = plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp)
+    st.pyplot(plot)
 
 # with col2:
 #     st.subheader("Put Price Heatmap")
