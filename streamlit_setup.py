@@ -28,7 +28,7 @@ st.markdown("""
 .metric-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: right;
     padding: 8px; /* Adjust the padding to control height */
     width: auto; /* Auto width for responsiveness, or set a fixed width if necessary */
     margin: auto; /* Center the container */
