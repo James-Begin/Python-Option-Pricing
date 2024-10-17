@@ -195,7 +195,7 @@ with st.sidebar:
 
     st.markdown("---")
     calculate_btn = st.button('Heatmap Parameters')
-    pp = st.number_input("Purchase Price", value = 0.0)
+    pp = st.number_input("Purchase Price", value = 10.0)
     spot_min = current_price * 0.5
     spot_max = current_price * 1.5
     exp_min = 1.0
@@ -203,7 +203,7 @@ with st.sidebar:
 
     spot_range1 = np.linspace(spot_min, pp, 6)
     spot_range2 = np.linspace(pp, spot_max, 6)
-    spot_range = np.concatenate((spot_range1, spot_range2))
+    spot_range = np.concatenate((spot_range1[:-1], spot_range2))
     exp_range = np.linspace(exp_min, exp_max, 12)
 
 
