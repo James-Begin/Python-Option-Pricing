@@ -37,15 +37,15 @@ st.markdown("""
 /* Custom classes for CALL and PUT values */
 .metric-call {
     background-color: #1ba122; /* Light green background */
-    color: "#3d3c35"
+    color: "#3d3c35";
     margin-right: 8px; /* Spacing between CALL and PUT */
     border-radius: 10px; /* Rounded corners */
 }
 
 .metric-put {
     background-color: #9e1919; /* Light red background */
-    color: "#3d3c35"
-    border-radius: 100px; /* Rounded corners */
+    color: "#3d3c35";
+    border-radius: 12px; /* Rounded corners */
 }
 
 /* Style for the value text */
@@ -58,7 +58,7 @@ st.markdown("""
 /* Style for the label text */
 .metric-label {
     font-size: 1rem; /* Adjust font size */
-    margin-bottom: 4px; /* Spacing between label and value */
+    margin-bottom: 6px; /* Spacing between label and value */
 }
 
 </style>
