@@ -171,10 +171,10 @@ class CalcOption:
         rfr = self.interest_rate
         bscall = round(blackscholes(price, strike, exp, rfr, vol)[0], 2)
         bsput = round(blackscholes(price, strike, exp, rfr, vol)[1], 2)
-        mccall = round(montecarlo(price, strike, exp, rfr, vol)[0], 2)
-        mcput = round(montecarlo(price, strike, exp, rfr, vol)[1], 2)
-        bccall = round(binomialcall(price, strike, exp, rfr, vol), 2)
-        bcput = round(binomialput(price, strike, exp, rfr, vol), 2)
+        mccall = round(montecarlo(price, strike, exp, rfr, vol, mcsteps)[0], 2)
+        mcput = round(montecarlo(price, strike, exp, rfr, vol, mcsteps)[1], 2)
+        bccall = round(binomialcall(price, strike, exp, rfr, vol, bsteps), 2)
+        bcput = round(binomialput(price, strike, exp, rfr, vol, bsteps), 2)
         call = np.mean([bscall,mccall,bccall])
         put = np.mean([bsput, mcput, bcput])
         self.call = call
@@ -231,7 +231,9 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
                 strike=strike,
                 current_price=spot,
                 volatility=bs_model.volatility,
-                interest_rate=bs_model.interest_rate
+                interest_rate=bs_model.interest_rate,
+                mcsteps = bs_model.mcsteps,
+                bsteps = bs_model.bsteps
             )
             bs_temp.calculate_prices()
             call_prices[i, j] = 100 * ((bs_temp.call - pp) / pp)
