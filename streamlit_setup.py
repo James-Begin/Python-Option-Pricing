@@ -195,7 +195,7 @@ with st.sidebar:
 
     st.markdown("---")
     calculate_btn = st.button('Heatmap Parameters')
-    purchase_price = st.slider("Purchase Price", value=0.0, min_value=0.0, max_value=1000.0)
+    purchase_price = st.number_input("Purchase Price", value = 0.0)
     spot_min = current_price * 0.5
     spot_max = current_price * 1.5
     exp_min = 1.0
@@ -206,7 +206,7 @@ with st.sidebar:
 
 
 
-def plot_heatmap(bs_model, spot_range, exp_range, strike):
+def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
     call_prices = np.zeros((len(spot_range), len(exp_range)))
     put_prices = np.zeros((len(spot_range), len(exp_range)))
 
@@ -220,8 +220,8 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike):
                 interest_rate=bs_model.interest_rate
             )
             bs_temp.calculate_prices()
-            call_prices[i, j] = bs_temp.call
-            put_prices[i, j] = bs_temp.put
+            call_prices[i, j] = bs_temp.call - pp
+            put_prices[i, j] = bs_temp.put - pp
 
     # Plotting Call Price Heatmap
     fig_call, ax_call = plt.subplots(figsize=(10, 8))
