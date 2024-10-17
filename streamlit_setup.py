@@ -57,7 +57,7 @@ st.markdown("""
 
 /* Style for the label text */
 .metric-label {
-    font-size: 1rem; /* Adjust font size */
+    font-size: 1.5rem; /* Adjust font size */
     margin-bottom: 2px; /* Spacing between label and value */
 }
 
