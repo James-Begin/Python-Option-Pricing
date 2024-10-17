@@ -206,8 +206,8 @@ with st.sidebar:
     exp_min = 1.0
     exp_max = time_to_maturity
 
-    spot_range1 = np.linspace(spot_min, current_price, 6)
-    spot_range2 = np.linspace(current_price, spot_max, 7)
+    spot_range1 = np.linspace(spot_min, current_price, 10)
+    spot_range2 = np.linspace(current_price, spot_max, 11)
     spot_range = np.round(np.concatenate((spot_range1[:-1], spot_range2)))
     exp_range = np.linspace(exp_min, exp_max, (time_to_maturity if time_to_maturity <= 14 else time_to_maturity // 7))
 
