@@ -233,7 +233,7 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
     # Plotting Call Price Heatmap
     fig_call, ax_call = plt.subplots(figsize=(10, 8))
     sns.heatmap(call_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
-                fmt=".2f", cmap="viridis", ax=ax_call)
+                fmt=".2f", cmap="RdYlGn", ax=ax_call)
     ax_call.set_title('CALL')
     ax_call.set_xlabel('Days to Maturity')
     ax_call.set_ylabel('Spot Price')
@@ -241,7 +241,7 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
     # Plotting Put Price Heatmap
     fig_put, ax_put = plt.subplots(figsize=(10, 8))
     sns.heatmap(put_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
-                fmt=".2f", cmap="viridis", ax=ax_put)
+                fmt=".2f", cmap="RdYlGn", ax=ax_put)
     ax_put.set_title('PUT')
     ax_put.set_xlabel('Days to Maturity')
     ax_put.set_ylabel('Spot Price')
