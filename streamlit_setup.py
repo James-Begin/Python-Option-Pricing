@@ -328,17 +328,8 @@ with col2:
         </div>
     """, unsafe_allow_html=True)
 
-st.markdown("")
-st.title("Options Price - Interactive Heatmap")
-st.info(
+st.markdown(
     "Explore how option prices fluctuate with varying 'Spot Prices and Volatility' levels using interactive heatmap parameters, all while maintaining a constant 'Strike Price'.")
-
-# Interactive Sliders and Heatmaps for Call and Put Options
-#col1= st.columns([1], gap="small")
-
-
-
-
 
 if callput == "Call":
     plot = plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp)
@@ -346,8 +337,3 @@ if callput == "Call":
 elif callput == "Put":
     plot = plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp)
     st.pyplot(plot)
-
-# with col2:
-#     st.subheader("Put Price Heatmap")
-#     _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, exp_range, strike, pp)
-#     st.pyplot(heatmap_fig_put)'''
