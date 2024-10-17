@@ -193,14 +193,14 @@ with st.sidebar:
     ticker = yf.Ticker(st.text_input("Equity Symbol", value='AAPL'))
 
     current_price = ticker.info.get('currentPrice')
-    strike = st.number_input("Strike Price", value=100.0)
+    strike = st.number_input("Strike Price", value=current_price)
     time_to_maturity = st.number_input("Time to Maturity (Days)", value=30.0)
     volatility = st.number_input("Volatility (σ)", value=0.2)
     interest_rate = st.number_input("Risk-Free Interest Rate", value=0.05)
 
     st.markdown("---")
     calculate_btn = st.button('Heatmap Parameters')
-    pp = st.number_input("Purchase Price", value = current_price)
+    pp = st.number_input("Purchase Price", value = strike)
     spot_min = current_price * 0.75
     spot_max = current_price * 1.33
     exp_min = 1.0
@@ -209,7 +209,7 @@ with st.sidebar:
     spot_range1 = np.linspace(spot_min, current_price, 6)
     spot_range2 = np.linspace(current_price, spot_max, 7)
     spot_range = np.concatenate((spot_range1[:-1], spot_range2))
-    exp_range = np.linspace(exp_min, exp_max, 12)
+    exp_range = np.linspace(exp_min, exp_max, (time_to_maturity if time_to_maturity <= 14 else time_to_maturity // 7))
 
 
 
