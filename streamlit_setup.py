@@ -201,8 +201,8 @@ with st.sidebar:
     exp_min = 1.0
     exp_max = time_to_maturity
 
-    spot_range = np.linspace(spot_min, spot_max, 10)
-    exp_range = np.linspace(exp_min, exp_max, 10)
+    spot_range = np.linspace(spot_min, spot_max, 15)
+    exp_range = np.linspace(exp_min, exp_max, 15)
 
 
 
@@ -210,8 +210,8 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike):
     call_prices = np.zeros((len(spot_range), len(exp_range)))
     put_prices = np.zeros((len(spot_range), len(exp_range)))
 
-    for i, exp in enumerate(exp_range[::-1]):
-        for j, spot in enumerate(spot_range):
+    for i, spot in enumerate(spot_range):
+        for j, exp in enumerate(exp_range):
             bs_temp = CalcOption(
                 time_to_maturity=exp,
                 strike=strike,
