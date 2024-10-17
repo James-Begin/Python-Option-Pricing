@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from param import String
+import datetime
 from scipy.stats import norm
+import yfinance as yf
 import plotly.graph_objects as go
 from numpy import log, sqrt, exp  # Make sure to import these
 import matplotlib.pyplot as plt
@@ -72,11 +75,13 @@ class CalcOption:
             volatility: float,
             interest_rate: float,
     ):
+
         self.time_to_maturity = time_to_maturity
         self.strike = strike
         self.price = current_price
         self.volatility = volatility
         self.interest_rate = interest_rate
+
 
     def calculate_prices(self):
         def blackscholes(price, strike, exp, rfr, vol):
@@ -186,8 +191,9 @@ with st.sidebar:
     st.markdown(
         f'<a href="{linkedin_url}" target="_blank" style="text-decoration: none; color: inherit;"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="25" height="25" style="vertical-align: middle; margin-right: 10px;">`Prudhvi Reddy, Muppala`</a>',
         unsafe_allow_html=True)
+    ticker = yf.Ticker(st.text_input("Equity Symbol", value='AAPL'))
 
-    current_price = st.number_input("Current Asset Price", value=100.0)
+    current_price = ticker.info.get('currentPrice')
     strike = st.number_input("Strike Price", value=100.0)
     time_to_maturity = st.number_input("Time to Maturity (Days)", value=30.0)
     volatility = st.number_input("Volatility (σ)", value=0.2)
@@ -247,7 +253,7 @@ st.title("Black-Scholes Pricing Model")
 
 # Table of Inputs
 input_data = {
-    "Current Asset Price": [current_price],
+    "Equity Symbol": [current_price],
     "Strike Price": [strike],
     "Time to Maturity (Days)": [time_to_maturity],
     "Volatility (σ)": [volatility],
