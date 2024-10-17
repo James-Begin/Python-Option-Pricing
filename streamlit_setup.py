@@ -334,16 +334,16 @@ st.info(
     "Explore how option prices fluctuate with varying 'Spot Prices and Volatility' levels using interactive heatmap parameters, all while maintaining a constant 'Strike Price'.")
 
 # Interactive Sliders and Heatmaps for Call and Put Options
-col1= st.columns([1], gap="small")
+#col1= st.columns([1], gap="small")
 
 
 
 
-with col1:
-    if callput == "Call":
-        plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp)
-    elif callput == "Put":
-        plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp)
+
+if callput == "Call":
+    plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp)
+elif callput == "Put":
+    plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp)
 
 # with col2:
 #     st.subheader("Put Price Heatmap")
