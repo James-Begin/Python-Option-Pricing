@@ -306,7 +306,7 @@ st.title("Options Profit Calculator")
 print(call_price, put_price)
 
 # Display Call and Put Values in colored tables
-col1, col2 = st.columns([1, 1], gap="small")
+col1= st.columns([1], gap="small")
 
 with col1:
     st.markdown(f"""
@@ -336,18 +336,15 @@ st.info(
 # Interactive Sliders and Heatmaps for Call and Put Options
 #col1, col2 = st.columns([1, 1], gap="small")
 
-if callput == "Call":
-    plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp)
-elif callput == "Put":
-    plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp)
 
 
-'''with col1:
-    st.subheader("Call Price Heatmap")
-    heatmap_fig_call, _ = plot_heatmap(bs_model, spot_range, exp_range, strike, pp)
-    st.pyplot(heatmap_fig_call)
 
-with col2:
-    st.subheader("Put Price Heatmap")
-    _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, exp_range, strike, pp)
-    st.pyplot(heatmap_fig_put)'''
+with col1:
+    if callput == "Call":
+        plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp)
+    elif callput == "Put":
+        plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp)
+# with col2:
+#     st.subheader("Put Price Heatmap")
+#     _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, exp_range, strike, pp)
+#     st.pyplot(heatmap_fig_put)'''
