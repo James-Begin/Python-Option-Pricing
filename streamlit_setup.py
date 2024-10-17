@@ -208,7 +208,7 @@ with st.sidebar:
 
     spot_range1 = np.linspace(spot_min, current_price, 6)
     spot_range2 = np.linspace(current_price, spot_max, 7)
-    spot_range = np.concatenate((spot_range1[:-1], spot_range2))
+    spot_range = np.round(np.concatenate((spot_range1[:-1], spot_range2)))
     exp_range = np.linspace(exp_min, exp_max, (time_to_maturity if time_to_maturity <= 14 else time_to_maturity // 7))
 
 
@@ -227,8 +227,8 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
                 interest_rate=bs_model.interest_rate
             )
             bs_temp.calculate_prices()
-            call_prices[i, j] = 100 * ((bs_temp.call - (pp*100)) / (pp*100))
-            put_prices[i, j] = 100 * ((bs_temp.put - (pp*100)) / (pp*100))
+            call_prices[i, j] = 100 * ((bs_temp.call - pp) / pp)
+            put_prices[i, j] = 100 * ((bs_temp.put - pp) / pp)
 
     # Plotting Call Price Heatmap
     fig_call, ax_call = plt.subplots(figsize=(10, 8))
