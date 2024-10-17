@@ -27,8 +27,8 @@ st.markdown("""
 /* Adjust the size and alignment of the CALL and PUT value containers */
 .metric-container {
     display: flex;
-    justify-content: center;
-    align-items: right;
+    justify-content: left;
+    align-items: center;
     padding: 8px; /* Adjust the padding to control height */
     width: auto; /* Auto width for responsiveness, or set a fixed width if necessary */
     margin: auto; /* Center the container */
