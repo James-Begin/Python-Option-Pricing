@@ -34,15 +34,15 @@ st.markdown("""
 
 /* Custom classes for CALL and PUT values */
 .metric-call {
-    background-color: #90ee90; /* Light green background */
-    color: black; /* Black font color */
+    background-color: #a8ffd1; /* Light green background */
+    color: "#3d3c35"
     margin-right: 10px; /* Spacing between CALL and PUT */
     border-radius: 10px; /* Rounded corners */
 }
 
 .metric-put {
     background-color: #ffcccb; /* Light red background */
-    color: black; /* Black font color */
+    color: "#3d3c35"
     border-radius: 10px; /* Rounded corners */
 }
 
