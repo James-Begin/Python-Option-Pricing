@@ -302,5 +302,5 @@ with col1:
 
 with col2:
     st.subheader("Put Price Heatmap")
-    _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, exp_range, pp)
+    _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, exp_range, strike, pp)
     st.pyplot(heatmap_fig_put)
