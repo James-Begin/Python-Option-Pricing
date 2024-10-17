@@ -200,7 +200,7 @@ with st.sidebar:
 
     st.markdown("---")
     calculate_btn = st.button('Heatmap Parameters')
-    pp = st.number_input("Purchase Price", value = 10.0)
+    pp = st.number_input("Purchase Price", value = current_price)
     spot_min = current_price * 0.5
     spot_max = current_price * 2
     exp_min = 1.0
