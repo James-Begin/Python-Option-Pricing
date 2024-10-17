@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from param import String
 import datetime
 from scipy.stats import norm
 import yfinance as yf
