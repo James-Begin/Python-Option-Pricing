@@ -328,8 +328,7 @@ with col2:
         </div>
     """, unsafe_allow_html=True)
 
-st.markdown(
-    "Explore how option prices fluctuate with varying 'Spot Prices and Volatility' levels using interactive heatmap parameters, all while maintaining a constant 'Strike Price'.")
+st.markdown(" ")
 
 if callput == "Call":
     plot = plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp)
