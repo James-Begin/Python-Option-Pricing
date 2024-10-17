@@ -101,7 +101,7 @@ class CalcOption:
             exp = (int(exp))
             years = exp / 365
             timeperstep = years / exp
-            numsim = 1000
+            numsim = 100
             simulate = np.zeros((exp, numsim))
             simulate[0] = price
 
@@ -116,7 +116,7 @@ class CalcOption:
                     np.exp(-rfr * years) * (1 / numsim) * np.sum(np.maximum(strike - simulate[-1], 0))]
 
         def binomialput(price, strike, exp, rfr, vol):
-            steps = 1000
+            steps = 100
             exp = exp / 365
             dt = exp / steps
             upfactor = np.exp(vol * np.sqrt(dt))
@@ -138,7 +138,7 @@ class CalcOption:
             return tree[0, 0]
 
         def binomialcall(price, strike, exp, rfr, vol):
-            steps = 1000
+            steps = 100
             exp = exp / 365
             dt = exp / steps
             upfactor = np.exp(vol * np.sqrt(dt))
@@ -167,12 +167,12 @@ class CalcOption:
         rfr = self.interest_rate
         bscall = round(blackscholes(price, strike, exp, rfr, vol)[0], 2)
         bsput = round(blackscholes(price, strike, exp, rfr, vol)[1], 2)
-        #mccall = round(montecarlo(price, strike, exp, rfr, vol)[0], 2)
-        #mcput = round(montecarlo(price, strike, exp, rfr, vol)[1], 2)
-        #bccall = round(binomialcall(price, strike, exp, rfr, vol), 2)
-        #bcput = round(binomialput(price, strike, exp, rfr, vol), 2)
-        call = np.mean([bscall])#,mccall,bccall])
-        put = np.mean([bsput])#, mcput, bcput])
+        mccall = round(montecarlo(price, strike, exp, rfr, vol)[0], 2)
+        mcput = round(montecarlo(price, strike, exp, rfr, vol)[1], 2)
+        bccall = round(binomialcall(price, strike, exp, rfr, vol), 2)
+        bcput = round(binomialput(price, strike, exp, rfr, vol), 2)
+        call = np.mean([bscall,mccall,bccall])
+        put = np.mean([bsput, mcput, bcput])
         self.call = call
         self.put = put
         return call, put
@@ -196,7 +196,7 @@ with st.sidebar:
     current_price = ticker.info.get('currentPrice')
     strike = st.number_input("Strike Price", min_value=0.0, value=current_price)
     time_to_maturity = st.number_input("Time to Maturity (Days)",min_value=1, value=7)
-    volatility = st.number_input("Volatility (σ)",min_value=0.0, max_value=1.0, value=0.2)
+    volatility = st.number_input("Volatility (σ)",min_value=0.0, max_value=1.0, value=0.1)
     interest_rate = st.number_input("Risk-Free Interest Rate", min_value=0.0, max_value=1.0, value=0.05)
     bs_model = CalcOption(time_to_maturity, strike, current_price, volatility, interest_rate)
     call_price, put_price = bs_model.calculate_prices()
