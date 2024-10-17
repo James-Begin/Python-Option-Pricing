@@ -195,7 +195,7 @@ with st.sidebar:
 
     st.markdown("---")
     calculate_btn = st.button('Heatmap Parameters')
-    purchase_price = st.number_input("Purchase Price", value = 0.0)
+    pp = st.number_input("Purchase Price", value = 0.0)
     spot_min = current_price * 0.5
     spot_max = current_price * 1.5
     exp_min = 1.0
@@ -297,10 +297,10 @@ col1, col2 = st.columns([1, 1], gap="small")
 
 with col1:
     st.subheader("Call Price Heatmap")
-    heatmap_fig_call, _ = plot_heatmap(bs_model, spot_range, exp_range, strike)
+    heatmap_fig_call, _ = plot_heatmap(bs_model, spot_range, exp_range, strike, pp)
     st.pyplot(heatmap_fig_call)
 
 with col2:
     st.subheader("Put Price Heatmap")
-    _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, exp_range, strike)
+    _, heatmap_fig_put = plot_heatmap(bs_model, spot_range, exp_range, , pp)
     st.pyplot(heatmap_fig_put)
