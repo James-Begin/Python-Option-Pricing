@@ -198,10 +198,11 @@ with st.sidebar:
     time_to_maturity = st.number_input("Time to Maturity (Days)",min_value=1, value=7)
     volatility = st.number_input("Volatility (σ)",min_value=0.0, max_value=1.0, value=0.2)
     interest_rate = st.number_input("Risk-Free Interest Rate", min_value=0.0, max_value=1.0, value=0.05)
-
+    bs_model = CalcOption(time_to_maturity, strike, current_price, volatility, interest_rate)
+    call_price, put_price = bs_model.calculate_prices()
     st.markdown("---")
     calculate_btn = st.button('Heatmap Parameters')
-    pp = st.number_input("Purchase Price", value = 1.00)
+    pp = st.number_input("Purchase Price", value = call_price)
     spot_min = current_price * 0.95
     spot_max = current_price * 1.05
     exp_min = 1.0
@@ -251,26 +252,11 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
 
     return fig_call, fig_put
 
-
 # Main Page for Output Display
-st.title("Black-Scholes Pricing Model")
-
-# Table of Inputs
-input_data = {
-    "Equity Symbol": [current_price],
-    "Strike Price": [strike],
-    "Time to Maturity (Days)": [time_to_maturity],
-    "Volatility (σ)": [volatility],
-    "Risk-Free Interest Rate": [interest_rate],
-}
-input_df = pd.DataFrame(input_data)
-st.table(input_df)
-
+st.title("Options Profit Calculator")
 # Calculate Call and Put values
-bs_model = CalcOption(time_to_maturity, strike, current_price, volatility, interest_rate)
-call_price, put_price = bs_model.calculate_prices()
-print(call_price, put_price)
 
+print(call_price, put_price)
 
 # Display Call and Put Values in colored tables
 col1, col2 = st.columns([1, 1], gap="small")
