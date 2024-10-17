@@ -238,6 +238,7 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
     ax_call.set_title(str(t) + ' Call Return Heatmap')
     ax_call.set_xlabel('Days to Maturity')
     ax_call.set_ylabel('Spot Price')
+    ax_call.axhline(y=current_price)
 
     # Plotting Put Price Heatmap
     fig_put, ax_put = plt.subplots(figsize=(10, 8))
@@ -246,6 +247,7 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
     ax_put.set_title(str(t) + ' Put Return Heatmap')
     ax_put.set_xlabel('Days to Maturity')
     ax_put.set_ylabel('Spot Price')
+    ax_put.axhline(y=current_price)
 
     return fig_call, fig_put
 
