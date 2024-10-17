@@ -190,7 +190,8 @@ with st.sidebar:
     st.markdown(
         f'<a href="{linkedin_url}" target="_blank" style="text-decoration: none; color: inherit;"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="25" height="25" style="vertical-align: middle; margin-right: 10px;">`Prudhvi Reddy, Muppala`</a>',
         unsafe_allow_html=True)
-    ticker = yf.Ticker(st.text_input("Equity Symbol", value='AAPL'))
+    t = st.text_input("Equity Symbol", value='AAPL')
+    ticker = yf.Ticker(t)
 
     current_price = ticker.info.get('currentPrice')
     strike = st.number_input("Strike Price", min_value=0.0, value=current_price)
@@ -234,7 +235,7 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
     fig_call, ax_call = plt.subplots(figsize=(10, 8))
     sns.heatmap(call_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
                 fmt=".2f", cmap="RdYlGn", ax=ax_call)
-    ax_call.set_title(str(ticker) + ' Call Return Heatmap')
+    ax_call.set_title(str(t) + ' Call Return Heatmap')
     ax_call.set_xlabel('Days to Maturity')
     ax_call.set_ylabel('Spot Price')
 
@@ -242,7 +243,7 @@ def plot_heatmap(bs_model, spot_range, exp_range, strike, pp):
     fig_put, ax_put = plt.subplots(figsize=(10, 8))
     sns.heatmap(put_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
                 fmt=".2f", cmap="RdYlGn", ax=ax_put)
-    ax_put.set_title(str(ticker) + ' Put Return Heatmap')
+    ax_put.set_title(str(t) + ' Put Return Heatmap')
     ax_put.set_xlabel('Days to Maturity')
     ax_put.set_ylabel('Spot Price')
 
