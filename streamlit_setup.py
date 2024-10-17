@@ -101,7 +101,7 @@ class CalcOption:
             exp = (int(exp))
             years = exp / 365
             timeperstep = years / exp
-            numsim = 100
+            numsim = 200
             simulate = np.zeros((exp, numsim))
             simulate[0] = price
 
@@ -116,7 +116,7 @@ class CalcOption:
                     np.exp(-rfr * years) * (1 / numsim) * np.sum(np.maximum(strike - simulate[-1], 0))]
 
         def binomialput(price, strike, exp, rfr, vol):
-            steps = 100
+            steps = 200
             exp = exp / 365
             dt = exp / steps
             upfactor = np.exp(vol * np.sqrt(dt))
@@ -138,7 +138,7 @@ class CalcOption:
             return tree[0, 0]
 
         def binomialcall(price, strike, exp, rfr, vol):
-            steps = 100
+            steps = 200
             exp = exp / 365
             dt = exp / steps
             upfactor = np.exp(vol * np.sqrt(dt))
@@ -209,8 +209,8 @@ with st.sidebar:
     exp_max = time_to_maturity
 
     spot_range1 = np.linspace(spot_min, current_price, 10)
-    spot_range2 = np.linspace(current_price, spot_max, 10)
-    spot_range = np.round(np.concatenate((spot_range1, spot_range2)))
+    spot_range2 = np.linspace(current_price, spot_max, 11)
+    spot_range = np.round(np.concatenate((spot_range1[::-1], spot_range2)))
     exp_range = np.linspace(exp_min, exp_max, (time_to_maturity if time_to_maturity <= 14 else time_to_maturity // 7))
 
 
