@@ -194,7 +194,7 @@ with st.sidebar:
 
     current_price = ticker.info.get('currentPrice')
     strike = st.number_input("Strike Price", value=current_price)
-    time_to_maturity = st.number_input("Time to Maturity (Days)", value=30.0)
+    time_to_maturity = st.number_input("Time to Maturity (Days)", value=30)
     volatility = st.number_input("Volatility (σ)", value=0.2)
     interest_rate = st.number_input("Risk-Free Interest Rate", value=0.05)
 
