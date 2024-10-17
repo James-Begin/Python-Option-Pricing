@@ -1,10 +1,10 @@
 [theme]
 primaryColor = "#3d3c35"
 # backgroundColor = "#10344b"
-backgroundColor = "#e8dcd4"
+backgroundColor = "#2b2b4d"
 # secondaryBackgroundColor = "#154360"
-secondaryBackgroundColor = "#e8dcd4"
-textColor = "#3d3c35"
+secondaryBackgroundColor = "#1f1f33"
+textColor = "#b3b3b3"
 font = "sans serif"
 
 [server]
