@@ -225,7 +225,6 @@ with st.sidebar:
 
 def plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp):
     call_prices = np.zeros((len(spot_range), len(exp_range)))
-    put_prices = np.zeros((len(spot_range), len(exp_range)))
 
     for i, spot in enumerate(spot_range[::-1]):
         for j, exp in enumerate(exp_range[::-1]):
@@ -240,30 +239,18 @@ def plot_heatmap_call(bs_model, spot_range, exp_range, strike, pp):
             )
             bs_temp.calculate_prices()
             call_prices[i, j] = 100 * ((bs_temp.call - pp) / pp)
-            put_prices[i, j] = 100 * ((bs_temp.put - pp) / pp)
 
-    # Plotting Call Price Heatmap
     fig_call, ax_call = plt.subplots(figsize=(10, 8))
     sns.heatmap(call_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
-                fmt=".2f", cmap="RdYlGn", ax=ax_call)
+                fmt=".2f", cmap=LinearSegmentedColormap.from_list('rg',["r", "w", "g"], N=256), ax=ax_call, cbar=False)
     ax_call.set_title(str(t) + ' Call Return Heatmap')
     ax_call.set_xlabel('Days to Maturity')
     ax_call.set_ylabel('Spot Price')
     ax_call.axhline(y=current_price)
-
-    # Plotting Put Price Heatmap
-    fig_put, ax_put = plt.subplots(figsize=(10, 8))
-    sns.heatmap(put_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
-                fmt=".2f", cmap="RdYlGn", ax=ax_put)
-    ax_put.set_title(str(t) + ' Put Return Heatmap')
-    ax_put.set_xlabel('Days to Maturity')
-    ax_put.set_ylabel('Spot Price')
-    ax_put.axhline(y=current_price)
 
     return fig_call
 
 def plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp):
-    call_prices = np.zeros((len(spot_range), len(exp_range)))
     put_prices = np.zeros((len(spot_range), len(exp_range)))
 
     for i, spot in enumerate(spot_range[::-1]):
@@ -278,22 +265,12 @@ def plot_heatmap_put(bs_model, spot_range, exp_range, strike, pp):
                 bsteps = bs_model.bsteps
             )
             bs_temp.calculate_prices()
-            call_prices[i, j] = 100 * ((bs_temp.call - pp) / pp)
             put_prices[i, j] = 100 * ((bs_temp.put - pp) / pp)
-
-    # Plotting Call Price Heatmap
-    fig_call, ax_call = plt.subplots(figsize=(10, 8))
-    sns.heatmap(call_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
-                fmt=".2f", cmap=LinearSegmentedColormap.from_list('rg',["r", "w", "g"], N=256) , ax=ax_call)
-    ax_call.set_title(str(t) + ' Call Return Heatmap')
-    ax_call.set_xlabel('Days to Maturity')
-    ax_call.set_ylabel('Spot Price')
-    ax_call.axhline(y=current_price)
 
     # Plotting Put Price Heatmap
     fig_put, ax_put = plt.subplots(figsize=(10, 8))
     sns.heatmap(put_prices, xticklabels=np.round(exp_range[::-1], 2), yticklabels=np.round(spot_range[::-1], 2), annot=True,
-                fmt=".2f", cmap=LinearSegmentedColormap.from_list('rg',["r", "w", "g"], N=256) , ax=ax_put)
+                fmt=".2f", cmap=LinearSegmentedColormap.from_list('rg',["r", "w", "g"], N=256) , ax=ax_put, cbar=False)
     ax_put.set_title(str(t) + ' Put Return Heatmap')
     ax_put.set_xlabel('Days to Maturity')
     ax_put.set_ylabel('Spot Price')
